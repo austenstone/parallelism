@@ -18,6 +18,6 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        parallel: ${{ needs.parallelism.outputs.matrix }}
+        parallel: ${{ fromJson(needs.parallelism.outputs.matrix) }}
     steps:
       - run: echo ${{ matrix.parallel.count }} / ${{ matrix.parallel.total }}
