@@ -5,8 +5,19 @@ on:
   workflow_dispatch:
 
 jobs:
-  run:
+  parallelism:
     runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.parallel.outputs.matrix }}
     steps:
       - uses: actions/checkout@v4
-      - uses: ./
+      - id: parallel
+        uses: ./
+  run:
+    needs: parallelism
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        parallel: ${{ needs.parallelism.outputs.matrix }}
+    steps:
+      - run: echo ${{ matrix.parallel.count }} / ${{ matrix.parallel.total }}

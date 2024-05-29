@@ -1,15 +1,21 @@
-name: TypeScript Action
+name: Parallelism
 author: Austen Stone
-description: A TypeScript Action
+description: Split a job into multiple parallel jobs
 branding:
   icon: "plus"
   color: "blue"
 
 inputs:
-  github-token:
-    description: The GitHub token used to create an authenticated client
-    default: ${{ github.token }}
-    required: false
+  count:
+    description: "Number of times to run"
+    required: true
+    default: 10
+
+outputs:
+  matrix:
+    description: "The matrix input"
+  count:
+    description: "Number of times run"
 
 runs:
   using: "node20"

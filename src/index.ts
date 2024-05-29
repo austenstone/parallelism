@@ -1,28 +1,12 @@
-import { getInput, info } from "@actions/core";
-import { getOctokit } from "@actions/github";
-
-interface Input {
-  token: string;
-}
-
-const getInputs = (): Input => {
-  const result = {} as Input;
-  result.token = getInput("github-token");
-  if (!result.token || result.token === "") {
-    throw new Error("github-token is required");
-  }
-  return result;
-}
+import { getInput, setOutput } from "@actions/core";
 
 export const run = async (): Promise<void> => {
-  const input = getInputs();
-  const octokit = getOctokit(input.token);
-
-  const {
-    data: { login },
-  } = await octokit.rest.users.getAuthenticated();
-
-  info(`Hello, ${login}!`);
+  const count = parseInt(getInput('count'));
+  setOutput('count', count);
+  setOutput('matrix', JSON.stringify(new Array(Number(count)).fill(0).map((_, i) => ({
+    index: i,
+    total: count,
+  }))));
 };
 
 run();
